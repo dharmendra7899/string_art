@@ -26,7 +26,7 @@ class Texts {
   String get number => 'Number';
 
   String get password => 'Password';
-  String get forgetPassword => 'Forget Password';
+  String get forgetPassword => 'Forget Password?';
 
   String get confirmPassword => 'Confirm Password';
   String get emailAddress => 'Email Address';
@@ -36,6 +36,7 @@ class Texts {
   String get iAgree => 'I agree to the. ';
 
   String get terms => 'T&C';
+  String get or => 'Or';
 
   String get and => ' and ';
 
@@ -45,8 +46,11 @@ class Texts {
   String get subscription => 'Subscription';
 
   String get con => 'Continue';
+  String get update => 'Update';
 
   String get register => 'Register';
+  String get google => 'Sign in with Google';
+  String get apple => 'Sign in with Apple';
 
   String get notUser => 'Not a user? ';
 
@@ -59,6 +63,11 @@ class Texts {
   String get alreadyAccount => 'Already have an account? ';
 
   String get home => 'Home';
+  String get setting => 'Setting';
+  String get start => 'Start';
+  String get pin => 'Pins';
+  String get line => 'Lines';
+  String get upload => 'Upload image ';
 
   String get art => 'Art';
 
@@ -68,6 +77,7 @@ class Texts {
   String get album => 'Albums';
   String get profile => 'Profile';
   String get logout => 'Logout';
+  String get plan => 'Subscribe Plans';
 }
 
 final texts = Texts();

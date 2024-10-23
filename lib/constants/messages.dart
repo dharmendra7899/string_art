@@ -12,8 +12,9 @@ class Messages {
   static String get EMAIL_REQ => 'Please enter email.';
 
   static String get PASSWORD_REQ => 'Please enter password.';
+  static String get SPECIAL_CHARACTER => 'Password: 8+ chars, 1 uppercase, 1 number, 1 special character.';
 
-  static String get TERMS_REQ => 'Please accept T&C';
+  static String get TERMS_REQ => 'Please accept terms & conditions';
 
   static String get FULL_NAME_REQ => 'Please enter full name.';
 

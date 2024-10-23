@@ -75,7 +75,7 @@ class _WalkthroughState extends State<Walkthrough> with Preferences {
                       )),
                   const SizedBox(height: 40),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 8),
                     child: appText(
                       title: onBoardingData[index]['description']!,
                       textAlign: TextAlign.center,

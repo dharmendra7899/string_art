@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:string_art/constants/messages.dart';
 import 'package:string_art/constants/texts.dart';
+import 'package:string_art/screens/auth/google_sign_in.dart';
 import 'package:string_art/screens/auth/register_screen.dart';
 import 'package:string_art/screens/bottom_navigation/bottom_navigation.dart';
 import 'package:string_art/styles/app_colors.dart';
 import 'package:string_art/utils/app_button.dart';
+import 'package:string_art/utils/app_helper_funtions.dart';
 import 'package:string_art/utils/app_text.dart';
 import 'package:string_art/utils/app_text_field.dart';
 import 'package:string_art/utils/navigation.dart';
@@ -43,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         appBar: AppBar(
           leading: const SizedBox(),
         ),
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -79,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Form(
           key: _loginFormKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Center(
                 child: appText(
@@ -92,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 20,
               ),
               AppTextField(
-                validator: (val) => null,
+                validator: (val) => AppHelperFunction.validateEmail(val ?? ''),
                 titleText: 'Email Address',
                 controller: email,
                 hintText: 'Enter your email',
@@ -106,7 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 16,
               ),
               AppTextField(
-                validator: (val) => null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? Messages.PASSWORD_REQ : null,
                 titleText: texts.password,
                 obscureText: _passwordVisible,
                 controller: password,
@@ -125,6 +130,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         ? Icons.visibility_outlined
                         : Icons.visibility_off_outlined,
                     color: appColors.primary,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: InkWell(
+                  onTap: () {},
+                  child: appText(
+                    title: texts.forgetPassword,
+                    fontWeight: FontWeight.w500,
+                    color: appColors.primary,
+                    fontSize: 16,
                   ),
                 ),
               ),
@@ -203,25 +223,28 @@ class _LoginScreenState extends State<LoginScreen> {
                 isLoading: isLoading,
                 radius: 30,
                 onPressed: () {
-                  checkValidation();
+                  if (_loginFormKey.currentState?.validate() ?? false) {
+                    if (!isChecked) {
+                      showToast(message: Messages.TERMS_REQ, context: context);
+                    } else {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      Future.delayed(const Duration(seconds: 1), () {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        if (mounted) {
+                          navigateRemoveUntil(
+                              context: context, to: const BottomNavigation());
+                        }
+                      });
+                    }
+                  }
                 },
                 fontSize: 15,
                 title: texts.con.toUpperCase(),
-                fontWeight: FontWeight.w500,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: InkWell(
-                  onTap: () {},
-                  child: appText(
-                    title: texts.forgetPassword,
-                    fontWeight: FontWeight.w600,
-                    color: appColors.primary,
-                    fontSize: 16,
-                  ),
-                ),
+                fontWeight: FontWeight.w600,
               ),
               const SizedBox(
                 height: 20,
@@ -250,30 +273,48 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 20,
               ),
+              Center(
+                child: appText(
+                    title: texts.or,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: appColors.primary),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              if (Platform.isAndroid) ...{
+                GoogleSignInButton(
+                  isDisabled: !isChecked,
+                  onPressed: () {
+                    if (!isChecked) {
+                      showToast(message: Messages.TERMS_REQ, context: context);
+                    } else {}
+                  },
+                ),
+              } else if (Platform.isAndroid) ...{
+                GoogleSignInButton(
+                  isDisabled: !isChecked,
+                  onPressed: () {
+                    if (!isChecked) {
+                      showToast(message: Messages.TERMS_REQ, context: context);
+                    } else {}
+                  },
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                AppleSignInButton(
+                  isDisabled: !isChecked,
+                  onPressed: () {
+                    if (!isChecked) {
+                      showToast(message: Messages.TERMS_REQ, context: context);
+                    } else {}
+                  },
+                ),
+              }
             ],
           ),
         ));
-  }
-
-  void checkValidation() {
-    if (email.text.isEmpty) {
-      showToast(message: Messages.EMAIL_REQ, context: context);
-    } else if (password.text.isEmpty) {
-      showToast(message: Messages.PASSWORD_REQ, context: context);
-    } else if (!isChecked) {
-      showToast(message: Messages.TERMS_REQ, context: context);
-    } else {
-      setState(() {
-        isLoading = true;
-      });
-      Future.delayed(const Duration(seconds: 1), () {
-        setState(() {
-          isLoading = false;
-        });
-        if (mounted) {
-          navigateRemoveUntil(context: context, to: const BottomNavigation());
-        }
-      });
-    }
   }
 }

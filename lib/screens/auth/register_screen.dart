@@ -7,6 +7,7 @@ import 'package:string_art/constants/texts.dart';
 import 'package:string_art/screens/auth/login_screen.dart';
 import 'package:string_art/styles/app_colors.dart';
 import 'package:string_art/utils/app_button.dart';
+import 'package:string_art/utils/app_helper_funtions.dart';
 import 'package:string_art/utils/app_text.dart';
 import 'package:string_art/utils/app_text_field.dart';
 import 'package:string_art/utils/navigation.dart';
@@ -46,7 +47,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(),
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -77,6 +78,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _form() {
+    String? validatePassword(String? value) {
+      return AppHelperFunction.passwordValidator(value ?? '');
+    }
+
+    String? validateConfirmPassword(String? value) {
+      if (value!.isEmpty) {
+        return AppHelperFunction.passwordValidator(value);
+      } else if (value != password.text) {
+        return Messages.CON_PASSWORD_NOT_MATCHED;
+      }
+      return null;
+    }
+
     return Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -96,7 +110,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               AppTextField(
                 titleText: texts.fullName,
-                validator: (val) => null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? Messages.FULL_NAME_REQ : null,
                 controller: fullName,
                 hintText: texts.fullName,
                 inputFormatters: [
@@ -109,7 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 16,
               ),
               AppTextField(
-                validator: (val) => null,
+                validator: (val) => AppHelperFunction.validateEmail(val ?? ''),
                 titleText: texts.emailAddress,
                 controller: email,
                 hintText: 'Enter your email',
@@ -124,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               AppTextField(
                 titleText: texts.password,
-                validator: (val) => null,
+                validator: validatePassword,
                 obscureText: _passwordVisible,
                 controller: password,
                 hintText: texts.password,
@@ -150,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               AppTextField(
                 titleText: texts.confirmPassword,
-                validator: (val) => null,
+                validator: validateConfirmPassword,
                 obscureText: _conPasswordVisible,
                 controller: confirmPassword,
                 hintText: texts.confirmPassword,
@@ -246,11 +261,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 isLoading: isLoading,
                 radius: 30,
                 onPressed: () {
-                  checkValidation();
+                  if (_registerFormKey.currentState?.validate() ?? false) {
+                    if (!isChecked) {
+                      showToast(message: Messages.TERMS_REQ, context: context);
+                    } else {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      Future.delayed(const Duration(seconds: 1), () {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        if (mounted) {
+                          navigateRemoveUntil(
+                              context: context, to: const LoginScreen());
+                        }
+                      });
+                    }
+                  }
                 },
                 title: texts.con.toUpperCase(),
                 fontSize: 15,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
               ),
               const SizedBox(
                 height: 20,
@@ -281,33 +313,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ],
           ),
         ));
-  }
-
-  void checkValidation() {
-    if (fullName.text.isEmpty) {
-      showToast(message: Messages.FULL_NAME_REQ, context: context);
-    } else if (email.text.isEmpty) {
-      showToast(message: Messages.EMAIL_REQ, context: context);
-    } else if (password.text.isEmpty) {
-      showToast(message: Messages.PASSWORD_REQ, context: context);
-    } else if (confirmPassword.text.isEmpty) {
-      showToast(message: Messages.CON_PASSWORD_REQ, context: context);
-    } else if (password.text != confirmPassword.text) {
-      showToast(message: Messages.CON_PASSWORD_NOT_MATCHED, context: context);
-    } else if (!isChecked) {
-      showToast(message: Messages.TERMS_REQ, context: context);
-    } else {
-      setState(() {
-        isLoading = true;
-      });
-      Future.delayed(const Duration(seconds: 1), () {
-        setState(() {
-          isLoading = false;
-        });
-        if (mounted) {
-          navigateRemoveUntil(context: context, to: const LoginScreen());
-        }
-      });
-    }
   }
 }

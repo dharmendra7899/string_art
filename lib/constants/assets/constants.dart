@@ -8,4 +8,7 @@ class ConstantImage {
   static const String logout = 'assets/images/logout.png';
   static const String subscription = 'assets/images/business.png';
   static const String gallery = 'assets/images/gallery.png';
+  static const String upload = 'assets/images/upload.png';
+  static const String apple = 'assets/images/apple.png';
+  static const String google = 'assets/images/google.png';
 }

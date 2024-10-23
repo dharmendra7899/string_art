@@ -3,6 +3,8 @@ import 'package:string_art/constants/assets/constants.dart';
 import 'package:string_art/constants/texts.dart';
 import 'package:string_art/preferences/preferences.dart';
 import 'package:string_art/screens/auth/login_screen.dart';
+import 'package:string_art/screens/profile/profile_screen.dart';
+import 'package:string_art/screens/subscription/plan_subscribe.dart';
 import 'package:string_art/styles/app_colors.dart';
 import 'package:string_art/utils/app_text.dart';
 import 'package:string_art/utils/custom_appbar.dart';
@@ -87,7 +89,11 @@ class _AccountScreenState extends State<AccountScreen> with Preferences {
                       return tempList[index]['name'] == ''
                           ? const SizedBox()
                           : InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                if(index==0){
+                                  navigateTo(context: context, to: const PlanSubscribe());
+                                }
+                              },
                               child: SizedBox(
                                 height: 50,
                                 child: Row(
@@ -222,7 +228,9 @@ class _AccountScreenState extends State<AccountScreen> with Preferences {
                         fontWeight: FontWeight.w500),
                     const SizedBox(height: 3),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        navigateTo(context: context, to: const ProfileScreen());
+                      },
                       child: Row(
                         children: [
                           appText(

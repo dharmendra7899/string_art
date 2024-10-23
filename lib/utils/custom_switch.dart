@@ -4,8 +4,15 @@ import 'package:string_art/styles/app_colors.dart';
 class CustomSwitch extends StatefulWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
+  final double height;
+  final double width;
 
-  const CustomSwitch({super.key, required this.value, required this.onChanged});
+  const CustomSwitch(
+      {super.key,
+      required this.value,
+      required this.onChanged,
+      this.height = 30,
+      this.width = 55});
 
   @override
   _CustomSwitchState createState() => _CustomSwitchState();
@@ -21,14 +28,14 @@ class _CustomSwitchState extends State<CustomSwitch> {
             : widget.onChanged(false);
       },
       child: Container(
-        width: 55.0,
-        height: 30.0,
+        width: widget.width,
+        height: widget.height,
         decoration: BoxDecoration(
           border: Border.all(
               width: 1.5,
-              color: widget.value ? appColors.appBlack : Colors.grey.shade300),
+              color: widget.value ? appColors.appBlack : appColors.gradient1),
           borderRadius: BorderRadius.circular(24.0),
-          color: widget.value ? appColors.appWhite : Colors.grey.shade100,
+          color: widget.value ? appColors.appWhite : appColors.lightColor,
         ),
         child: Padding(
           padding: const EdgeInsets.all(1),
@@ -45,7 +52,7 @@ class _CustomSwitchState extends State<CustomSwitch> {
               height: 20.0,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: widget.value ? appColors.primary : Colors.greenAccent),
+                  color: widget.value ? appColors.secondary : appColors.bgGreen),
             ),
           ),
         ),

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:string_art/constants/messages.dart';
 import 'package:string_art/styles/app_colors.dart';
 import 'package:string_art/utils/cutom_bottom_sheet.dart';
 import 'package:string_art/utils/show_toast.dart';
@@ -100,7 +101,7 @@ class AppHelperFunction {
     return null;
   }
 
-  void chooseImages({
+ static void chooseImages({
     required BuildContext context,
     required Function onCameraCLick,
     required Function onGalleryCLick,
@@ -121,7 +122,7 @@ class AppHelperFunction {
                   Icon(
                     Icons.photo,
                     size: 30,
-                    color: appColors.appBlack,
+                    color: appColors.primaryDark,
                   ),
                   const SizedBox(
                     height: 6,
@@ -144,7 +145,7 @@ class AppHelperFunction {
                   Icon(
                     Icons.camera_alt,
                     size: 30,
-                    color: appColors.appBlack,
+                    color: appColors.primaryDark,
                   ),
                   const SizedBox(
                     height: 6,
@@ -160,33 +161,33 @@ class AppHelperFunction {
         ));
   }
 
-  String? passwordValidator(String? value) {
+ static String? passwordValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter a password';
+      return Messages.PASSWORD_REQ;
     }
     final passwordPattern =
         RegExp(r'^(?=.*[A-Z])(?=.*[\W_])(?=.*\d)[A-Za-z\d\W_]{8,}$');
     if (!passwordPattern.hasMatch(value)) {
-      return 'Password: 8+ chars, 1 uppercase, 1 number, 1 special character.';
+      return Messages.SPECIAL_CHARACTER;
     }
     return null;
   }
 
-  String? validateEmail(String? value) {
+ static String? validateEmail(String? value) {
     final emailRegExp = RegExp(
       r'^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$',
       caseSensitive: false,
     );
 
     if (value == null || value.isEmpty) {
-      return 'Email cannot be empty';
+      return Messages.EMAIL_REQ;
     } else if (!emailRegExp.hasMatch(value)) {
-      return 'Enter a valid email address';
+      return Messages.EMAIL_VALID;
     }
     return null;
   }
 
-  String? validateMobileNumber(String? value) {
+  static String? validateMobileNumber(String? value) {
     final mobileRegExp = RegExp(
       r'^[7-9]\d{9}$',
     );

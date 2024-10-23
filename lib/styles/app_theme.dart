@@ -40,6 +40,7 @@ class AppTheme {
       color: appColors.appBlack,
     ),
     inputDecorationTheme: InputDecorationTheme(
+
       hintStyle: TextStyle(
         color: appColors.borderColor,
       ),

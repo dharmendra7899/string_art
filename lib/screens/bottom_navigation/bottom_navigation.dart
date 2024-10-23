@@ -27,7 +27,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     List<Widget> screens = [
-      const HomeScreen(),
+     // const HomeScreen(),
       const ArtScreen(),
       const AlbumScreen(),
       const AccountScreen(),
@@ -59,7 +59,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           backgroundColor: appColors.gradient2,
           type: BottomNavigationBarType.fixed,
           items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
+           /* BottomNavigationBarItem(
               icon: Image.asset(
                 height: 20,
                 width: 20,
@@ -75,7 +75,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 color: appColors.appWhite,
               ),
               label: texts.home,
-            ),
+            ),*/
             BottomNavigationBarItem(
               icon: Image.asset(
                 height: 22,
